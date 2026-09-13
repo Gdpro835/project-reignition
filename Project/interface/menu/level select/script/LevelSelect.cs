@@ -173,9 +173,9 @@ public partial class LevelSelect : Menu
 
 		if (levelOptions[VerticalSelection].IsUnlocked)
 		{
-			if (Runtime.Instance.IsActionJustPressed("sys_pause", "ui_accept") && menuMemory[MemoryKeys.ActiveMenu] != (int)MemoryKeys.TimeAttack)
+			if (Runtime.Instance.IsActionJustPressed("sys_pause", "ui_accept"))
 			{
-				if (isModWorld && ModManager.Instance.LevelMods.Count == 0) //Don't open the bgm menu when we don't have any mods
+				if (isModWorld && ModManager.Instance.LevelMods.Count == 0) // Don't open the bgm menu when we don't have any mods
 					return;
 				menuMemory[MemoryKeys.ActiveMenu] = (int)MemoryKeys.Jukebox;
 				OpenBGMMenu();
