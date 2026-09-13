@@ -140,7 +140,6 @@ public partial class SoundManager : Control
 	public void CancelDialog()
 	{
 		UpdateCharacterDialog();
-		if (!IsSubtitlesActive) return;
 
 		dialogQueue.Clear();
 		delayTimer.Stop();
