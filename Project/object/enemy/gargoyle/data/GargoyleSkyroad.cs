@@ -176,7 +176,11 @@ public partial class GargoyleSkyroad : PathFollow3D
 		if (isSlipstreamActive)
 		{
 			if (Player.Skills.IsSpeedBreakActive)
+			{
+				slipstreamsTriggered = 0; // Reset slipstream counter
+				slipstreamTimer = 0;
 				return;
+			}
 
 			slipstreamTimer = Mathf.MoveToward(slipstreamTimer, 0, PhysicsManager.physicsDelta);
 			if (Mathf.IsZeroApprox(slipstreamTimer))
@@ -184,9 +188,6 @@ public partial class GargoyleSkyroad : PathFollow3D
 
 			return;
 		}
-
-		if (isFastSpeed)
-			return;
 
 		if (Player.Skills.IsSpeedBreakActive)
 		{
