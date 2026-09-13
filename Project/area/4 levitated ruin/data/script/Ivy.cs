@@ -87,6 +87,9 @@ public partial class Ivy : Launcher
 
 	private void StartIvy()
 	{
+		if (Player.IsLaunching && Player.ActiveLauncher == this)
+			return;
+
 		Player.StartIvy(this);
 		EmitSignal(SignalName.IvyStarted);
 	}
@@ -94,9 +97,6 @@ public partial class Ivy : Launcher
 	public void OnEntered(Area3D a)
 	{
 		if (!a.IsInGroup("player detection") || Engine.IsEditorHint())
-			return;
-
-		if (Player.IsLaunching && Player.ActiveLauncher == this)
 			return;
 
 		isInteractingWithPlayer = true;
