@@ -171,12 +171,6 @@ public partial class ZiplineState : PlayerState
 	/// <summary> Attempts a full swing. </summary>
 	private void StartFullSwing()
 	{
-		if (queuedFullSwingDirection == 0 && Trigger.SwingSide != Mathf.Sign(input) && Mathf.IsZeroApprox(tapSwingTimer))
-		{
-			queuedFullSwingDirection = Mathf.Sign(input);
-			return;
-		}
-
 		tapSwingTimer = 0;
 		fullSwingDirection = queuedFullSwingDirection == 0 ? Mathf.Sign(input) : queuedFullSwingDirection;
 		Player.Animator.StartZiplineTap(Mathf.Sign(input) > 0, false);
