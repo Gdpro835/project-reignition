@@ -177,6 +177,7 @@ public partial class GargoyleSkyroad : PathFollow3D
 		{
 			if (Player.Skills.IsSpeedBreakActive)
 			{
+				isFastSpeed = false;
 				slipstreamsTriggered = 0; // Reset slipstream counter
 				slipstreamTimer = 0;
 				return;
