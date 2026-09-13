@@ -1423,7 +1423,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8, 0)
 shape = SubResource("BoxShape3D_mow5f")
 
 [node name="HallU" parent="MainAct/CullingMap" unique_id=1552723947 instance=ExtResource("26_bkait")]
-transform = Transform3D(5.96046e-08, 0, -1, 0, 1, 0, 1, 0, 5.96046e-08, -87.8062, -9.99888, -320.263)
+transform = Transform3D(5.96046e-08, 0, -1, 0, 1, 0, 1, 0, 5.96046e-08, -131.76535, -9.99888, -320.263)
 "Trigger Mode" = 2
 "Exit Mode" = 2
 
