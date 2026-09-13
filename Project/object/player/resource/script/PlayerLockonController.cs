@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Godot;
 using Project.Core;
+using Project.Interface;
 
 namespace Project.Gameplay;
 
@@ -14,8 +15,11 @@ public partial class PlayerLockonController : Area3D
 	public void Initialize(PlayerController player)
 	{
 		Player = player;
-		IsMonitoring = SaveManager.ActiveSkillRing.IsSkillEquipped(SkillKey.GroundedHomingAttack);
 
+		Countdown.Instance.CountdownFinished += () =>
+		{
+			IsMonitoring = SaveManager.ActiveSkillRing.IsSkillEquipped(SkillKey.GroundedHomingAttack);
+		};
 		Player.Skills.TimeBreakStarted += UpdateLockonAnimationSpeedScale;
 		Player.Skills.TimeBreakStopped += UpdateLockonAnimationSpeedScale;
 	}
