@@ -16,7 +16,7 @@ public partial class PlayerLockonController : Area3D
 	{
 		Player = player;
 
-		Countdown.Instance.CountdownFinished += () =>
+		Countdown.Instance?.CountdownFinished += () =>
 		{
 			IsMonitoring = SaveManager.ActiveSkillRing.IsSkillEquipped(SkillKey.GroundedHomingAttack);
 		};
