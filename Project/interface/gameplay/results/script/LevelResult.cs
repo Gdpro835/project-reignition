@@ -31,8 +31,8 @@ public partial class LevelResult : Control
 	private bool isFadingBgm;
 	private StageSettings Stage => StageSettings.Instance;
 
-	private readonly StringName AchievementGoldKey = "the ultimate";
-	private readonly int AchievementGoldRequirement = 111;
+	public const string AchievementGoldKey = "the ultimate";
+	public const int AchievementGoldRequirement = 111;
 	public const string AchievementGoldTimeAttackKey = "record buster";
 	public const int AchievementGoldTimeAttackRequirement = 114; // All gold medals and categories
 

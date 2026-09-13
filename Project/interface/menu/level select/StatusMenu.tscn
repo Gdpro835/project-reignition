@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://bwasgjby472mu" path="res://interface/menu/level select/texture/ring.png" id="3_koge4"]
 [ext_resource type="Texture2D" uid="uid://pqt4jg7a3vhw" path="res://interface/menu/level select/texture/status_scroll.png" id="3_vfdeu"]
 [ext_resource type="Texture2D" uid="uid://b6eevqhlu5ymx" path="res://interface/menu/level select/texture/fire soul.png" id="4_7pdsa"]
+[ext_resource type="Texture2D" uid="uid://cbvqn6eot8mqh" path="res://interface/menu/level select/texture/gold status.png" id="8_1ibwx"]
 [ext_resource type="Texture2D" uid="uid://bokmpqe3qfali" path="res://interface/menu/save select/texture/save atlas.png" id="8_vfdeu"]
 [ext_resource type="AudioStream" uid="uid://ysuyyr6346w6" path="res://sound/sfx/system/special book confirm.wav" id="9_jxgx2"]
 [ext_resource type="AudioStream" uid="uid://d3o0o85sotlrf" path="res://sound/sfx/system/special book cancel.wav" id="10_1ibwx"]
@@ -476,7 +477,7 @@ _data = {
 &"show": SubResource("Animation_7pdsa")
 }
 
-[node name="StatusMenu" type="Control" unique_id=81147333 node_paths=PackedStringArray("levelLabel", "ringLabel", "skillPointLabel", "fireSoulLabel", "soulGaugeLabel", "expLabel", "nextExpLabel", "nextMissionLabel", "animator")]
+[node name="StatusMenu" type="Control" unique_id=81147333 node_paths=PackedStringArray("levelLabel", "ringLabel", "skillPointLabel", "fireSoulLabel", "soulGaugeLabel", "goldMedalLabel", "expLabel", "nextExpLabel", "nextMissionLabel", "animator")]
 z_index = 100
 layout_mode = 3
 anchors_preset = 15
@@ -493,6 +494,7 @@ ringLabel = NodePath("Menu/Data/Options/Values/RingLabel")
 skillPointLabel = NodePath("Menu/Data/Options/Values/SkillPointLabel")
 fireSoulLabel = NodePath("Menu/Data/Options/Values/FireSoulLabel")
 soulGaugeLabel = NodePath("Menu/Data/Options/Values/SoulGaugeLabel")
+goldMedalLabel = NodePath("Menu/Data/Options/Values/GoldLabel")
 expLabel = NodePath("Menu/Data/Options/Values/TotalExpLabel")
 nextExpLabel = NodePath("Menu/Data/Options/Values/NextLevelLabel")
 nextMissionLabel = NodePath("Menu/Data/Options/Values/NextMissionLabel")
@@ -526,6 +528,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.2, 1.2)
 mouse_filter = 2
 
 [node name="Clip" type="Control" parent="Menu/Background" unique_id=253849002]
@@ -579,9 +583,9 @@ anchors_preset = -1
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -266.0
-offset_top = 100.0
+offset_top = 52.0
 offset_right = 266.0
-offset_bottom = 176.70999
+offset_bottom = 128.70999
 grow_horizontal = 2
 text = "status_header"
 label_settings = ExtResource("2_xwbnd")
@@ -596,9 +600,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -502.0
-offset_top = -220.0
+offset_top = -284.0
 offset_right = 498.0
-offset_bottom = 204.0
+offset_bottom = 194.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -612,12 +616,14 @@ mouse_filter = 2
 theme_override_constants/separation = 8
 
 [node name="LevelLabel" type="Label" parent="Menu/Data/Options/Labels" unique_id=1671374642]
+custom_minimum_size = Vector2(0, 46)
 layout_mode = 2
 text = "status_level"
 label_settings = ExtResource("2_koge4")
 uppercase = true
 
 [node name="Ring" type="HBoxContainer" parent="Menu/Data/Options/Labels" unique_id=258538580]
+custom_minimum_size = Vector2(0, 46)
 layout_mode = 2
 mouse_filter = 2
 
@@ -634,6 +640,7 @@ label_settings = ExtResource("2_koge4")
 uppercase = true
 
 [node name="FireSoul" type="HBoxContainer" parent="Menu/Data/Options/Labels" unique_id=2033199214]
+custom_minimum_size = Vector2(0, 46)
 layout_mode = 2
 mouse_filter = 2
 
@@ -649,31 +656,53 @@ text = "status_fire_soul"
 label_settings = ExtResource("2_koge4")
 uppercase = true
 
+[node name="Gold" type="HBoxContainer" parent="Menu/Data/Options/Labels" unique_id=676047861]
+custom_minimum_size = Vector2(0, 46)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Icon" type="TextureRect" parent="Menu/Data/Options/Labels/Gold" unique_id=1009892793]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("8_1ibwx")
+expand_mode = 2
+
+[node name="GoldLabel" type="Label" parent="Menu/Data/Options/Labels/Gold" unique_id=227691523]
+layout_mode = 2
+text = "status_gold_medal"
+label_settings = ExtResource("2_koge4")
+uppercase = true
+
 [node name="SkillPointLabel" type="Label" parent="Menu/Data/Options/Labels" unique_id=1534195463]
+custom_minimum_size = Vector2(0, 46)
 layout_mode = 2
 text = "status_skill_points"
 label_settings = ExtResource("2_koge4")
 uppercase = true
 
 [node name="SoulGaugeLabel" type="Label" parent="Menu/Data/Options/Labels" unique_id=491339603]
+custom_minimum_size = Vector2(0, 46)
 layout_mode = 2
 text = "status_soul_gauge"
 label_settings = ExtResource("2_koge4")
 uppercase = true
 
 [node name="TotalExpLabel" type="Label" parent="Menu/Data/Options/Labels" unique_id=423801084]
+custom_minimum_size = Vector2(0, 46)
 layout_mode = 2
 text = "status_total_exp"
 label_settings = ExtResource("2_koge4")
 uppercase = true
 
 [node name="NextLevelLabel" type="Label" parent="Menu/Data/Options/Labels" unique_id=1337968274]
+custom_minimum_size = Vector2(0, 46)
 layout_mode = 2
 text = "status_next_exp"
 label_settings = ExtResource("2_koge4")
 uppercase = true
 
 [node name="NextMissionLabel" type="Label" parent="Menu/Data/Options/Labels" unique_id=817728805]
+custom_minimum_size = Vector2(0, 46)
 layout_mode = 2
 text = "status_next_story"
 label_settings = ExtResource("2_koge4")
@@ -686,6 +715,7 @@ mouse_filter = 2
 theme_override_constants/separation = 8
 
 [node name="LevelLabel" type="Label" parent="Menu/Data/Options/Values" unique_id=1570843228]
+custom_minimum_size = Vector2(0, 46)
 layout_mode = 2
 text = "00"
 label_settings = ExtResource("2_koge4")
@@ -693,20 +723,31 @@ horizontal_alignment = 2
 uppercase = true
 
 [node name="RingLabel" type="Label" parent="Menu/Data/Options/Values" unique_id=1950407386]
+custom_minimum_size = Vector2(0, 46)
 layout_mode = 2
 text = "123"
 label_settings = ExtResource("2_koge4")
 horizontal_alignment = 2
 uppercase = true
 
-[node name="FireSoulLabel" type="Label" parent="Menu/Data/Options/Values" unique_id=1941661387]
+[node name="FireSoulLabel" type="Label" parent="Menu/Data/Options/Values" unique_id=2014316718]
+custom_minimum_size = Vector2(0, 46)
 layout_mode = 2
 text = "000/100"
 label_settings = ExtResource("2_koge4")
 horizontal_alignment = 2
 uppercase = true
 
+[node name="GoldLabel" type="Label" parent="Menu/Data/Options/Values" unique_id=1941661387]
+custom_minimum_size = Vector2(0, 46)
+layout_mode = 2
+text = "000/111"
+label_settings = ExtResource("2_koge4")
+horizontal_alignment = 2
+uppercase = true
+
 [node name="SkillPointLabel" type="Label" parent="Menu/Data/Options/Values" unique_id=355361401]
+custom_minimum_size = Vector2(0, 46)
 layout_mode = 2
 text = "230/300"
 label_settings = ExtResource("2_koge4")
@@ -714,6 +755,7 @@ horizontal_alignment = 2
 uppercase = true
 
 [node name="SoulGaugeLabel" type="Label" parent="Menu/Data/Options/Values" unique_id=1411345622]
+custom_minimum_size = Vector2(0, 46)
 layout_mode = 2
 text = "100"
 label_settings = ExtResource("2_koge4")
@@ -721,6 +763,7 @@ horizontal_alignment = 2
 uppercase = true
 
 [node name="TotalExpLabel" type="Label" parent="Menu/Data/Options/Values" unique_id=695649342]
+custom_minimum_size = Vector2(0, 46)
 layout_mode = 2
 text = "10000000"
 label_settings = ExtResource("2_koge4")
@@ -728,6 +771,7 @@ horizontal_alignment = 2
 uppercase = true
 
 [node name="NextLevelLabel" type="Label" parent="Menu/Data/Options/Values" unique_id=1114855114]
+custom_minimum_size = Vector2(0, 46)
 layout_mode = 2
 text = "10000000"
 label_settings = ExtResource("2_koge4")
@@ -735,6 +779,7 @@ horizontal_alignment = 2
 uppercase = true
 
 [node name="NextMissionLabel" type="Label" parent="Menu/Data/Options/Values" unique_id=564795053]
+custom_minimum_size = Vector2(0, 46)
 layout_mode = 2
 text = "DINOSAUR JUNGLE"
 label_settings = ExtResource("2_koge4")

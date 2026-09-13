@@ -15,6 +15,7 @@ public partial class StatusMenu : Menu
 	[Export] private Label skillPointLabel;
 	[Export] private Label fireSoulLabel;
 	[Export] private Label soulGaugeLabel;
+	[Export] private Label goldMedalLabel;
 	[Export] private Label expLabel;
 	[Export] private Label nextExpLabel;
 	[Export] private Label nextMissionLabel;
@@ -37,6 +38,10 @@ public partial class StatusMenu : Menu
 		ringLabel.Text = SaveManager.ActiveGameData.ringCount.ToString("00000000");
 		skillPointLabel.Text = $"{SaveManager.ActiveSkillRing.TotalCost}/{SaveManager.ActiveSkillRing.MaxSkillPoints}";
 		fireSoulLabel.Text = $"{SaveManager.ActiveGameData.LevelData.FireSoulCount}/{Gameplay.Objects.FireSoul.AchievementFireSoulRequirement}";
+		if (TimeAttackManager.Instance.IsRunActive)
+			goldMedalLabel.Text = $"{SaveManager.TimeData.GoldMedalCount}/{LevelResult.AchievementGoldTimeAttackRequirement}";
+		else
+			goldMedalLabel.Text = $"{SaveManager.ActiveGameData.LevelData.GoldMedalCount}/{LevelResult.AchievementGoldRequirement}";
 		soulGaugeLabel.Text = SaveManager.ActiveGameData.CalculateMaxSoulPower(false).ToString("000");
 
 		nextMissionLabel.Text = "-";
