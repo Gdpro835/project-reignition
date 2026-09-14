@@ -614,6 +614,9 @@ debug_pause_shader={
 
 [input_devices]
 
+pointing/emulate_touch_from_mouse=true
+pointing/emulate_mouse_from_touch=false
+sensors/enable_accelerometer=true
 sensors/enable_gyroscope=true
 
 [internationalization]
@@ -681,6 +684,10 @@ jolt_3d/collisions/areas_detect_static_bodies=true
 
 [rendering]
 
+# Desktop keeps the current renderer; Android uses the mobile renderer.
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="mobile"
+textures/default_filters/use_nearest_mipmap_filter=false
 textures/vram_compression/import_etc2_astc=true
 lights_and_shadows/directional_shadow/soft_shadow_filter_quality=0
 lights_and_shadows/positional_shadow/soft_shadow_filter_quality=0
