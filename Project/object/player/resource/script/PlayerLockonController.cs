@@ -16,10 +16,13 @@ public partial class PlayerLockonController : Area3D
 	{
 		Player = player;
 
-		Countdown.Instance?.CountdownFinished += () =>
+		if (Countdown.Instance != null)
 		{
-			IsMonitoring = SaveManager.ActiveSkillRing.IsSkillEquipped(SkillKey.GroundedHomingAttack);
-		};
+			Countdown.Instance.CountdownFinished += () =>
+			{
+				IsMonitoring = SaveManager.ActiveSkillRing.IsSkillEquipped(SkillKey.GroundedHomingAttack);
+			};
+		}
 		Player.Skills.TimeBreakStarted += UpdateLockonAnimationSpeedScale;
 		Player.Skills.TimeBreakStopped += UpdateLockonAnimationSpeedScale;
 	}
