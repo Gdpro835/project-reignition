@@ -1,0 +1,72 @@
+name: Android APK
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-android:
+    name: Build Android APK
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages
+        run: |
+          yes | sdkmanager --licenses || true
+          sdkmanager \
+            "platform-tools" \
+            "platforms;android-35" \
+            "build-tools;35.0.0"
+
+      - name: Set up Godot .NET
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: "4.7.0"
+          use-dotnet: true
+          include-templates: true
+
+      - name: Prepare export preset
+        run: |
+          cp docs/android/export_presets.cfg.example Project/export_presets.cfg
+          mkdir -p Project/build/android
+
+      - name: Import Godot project
+        working-directory: Project
+        run: |
+          godot --headless --editor --quit --import
+
+      - name: Build Android APK
+        working-directory: Project
+        run: |
+          godot \
+            --headless \
+            --path . \
+            --export-release \
+            "Android Release" \
+            build/android/ProjectReignition.apk
+
+      - name: Upload unsigned APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Project-Reignition-Android
+          path: Project/build/android/ProjectReignition.apk
+          if-no-files-found: error
