@@ -54,6 +54,20 @@ jobs:
         run: |
           godot --headless --editor --quit --import
 
+      - name: Restore C# dependencies
+        working-directory: Project
+        run: |
+          dotnet restore \
+            "Sonic Remake Project.csproj"
+
+      - name: Build C# project
+        working-directory: Project
+        run: |
+          dotnet build \
+            "Sonic Remake Project.csproj" \
+            --configuration ExportRelease \
+            --no-restore
+
       - name: Build Android APK
         working-directory: Project
         run: |
