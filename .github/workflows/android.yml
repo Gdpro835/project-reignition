@@ -65,8 +65,41 @@ jobs:
         run: |
           dotnet build \
             "Sonic Remake Project.csproj" \
-            --configuration ExportRelease \
+            --configuration Release \
             --no-restore
+
+      - name: Publish C# for Android
+        working-directory: Project
+        run: |
+         dotnet publish \
+         "Sonic Remake Project.csproj" \
+         --configuration Release \
+         --no-restore \
+         --no-build \
+         -p:TargetFramework=net9.0-android \
+         -p:PublishDir=bin/publish
+
+      - name: List published binaries
+        working-directory: Project
+        run: |
+         echo "=== Published binaries ==="
+         find bin/publish -type f -name "*.dll" | head -20
+         du -sh bin/publish
+
+      - name: Debug C# setup
+        working-directory: Project
+        run: |
+         echo "=== Project structure ==="
+         ls -la | grep -E "csproj|\.godot|bin|obj"
+    
+         echo "=== .godot directory ==="
+         find .godot -type f -name "*.dll" 2>/dev/null | head -10 || echo "No DLLs in .godot"
+    
+         echo "=== .csproj content (C# config) ==="
+         grep -A5 "TargetFramework\|Godot.NET.Sdk" "Sonic Remake Project.csproj" | head -20
+    
+         echo "=== Bin directory ==="
+         find bin -type f -name "*.dll" 2>/dev/null | head -20 || echo "No bin directory"
 
       - name: Build Android APK
         working-directory: Project
