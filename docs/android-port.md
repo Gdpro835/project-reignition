@@ -34,9 +34,11 @@ versioned.
 1. `addons/ffmpeg/ffmpeg.gdextension` declares Android ARM64 libraries, but the
    corresponding files are not currently present in the checkout. Video playback
    must either receive Android ARM64 binaries or be disabled on Android.
-2. A touch HUD still needs to be connected to the existing actions (`move_*`,
-   `button_jump`, `button_action`, `button_attack`, `button_brake`,
-   `button_speedbreak`, `button_timebreak`, and `sys_pause`).
+2. A first-pass touch HUD is now connected as an autoload. It feeds the existing
+   actions (`move_*`, `ui_*`, `button_jump`, `button_action`, `button_attack`,
+   `button_brake`, `button_speedbreak`, `button_timebreak`, and `sys_pause`).
+   It is visible on Android and can be previewed in the editor by setting
+   `mobile/touch_controls_preview` to `true`.
 3. The Mobile renderer needs a device pass for post-processing, reflections,
    particles, and texture memory. The project is large enough that loading and
    memory testing must happen on a real device.

@@ -42,6 +42,7 @@ default_bus_layout="res://sound/AudioLayout.tres"
 
 Core="*res://core/Core.tscn"
 TransitionManager="*res://interface/transition/TransitionManager.tscn"
+MobileTouchOverlay="*res://mobile/MobileTouchOverlay.gd"
 SoundManager="*res://sound/SoundManager.tscn"
 DebugMenu="*uid://cggqb75a8w8r"
 PartyManager="*res://party/script/core/party_manager.gd"
@@ -98,6 +99,10 @@ import/blend/blender_path="C:\\Program Files\\Blender Foundation\\Blender 3.1\\b
 [global]
 
 local=false
+
+[mobile]
+
+touch_controls_preview=false
 
 [global_group]
 
