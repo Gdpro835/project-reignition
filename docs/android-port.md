@@ -15,7 +15,9 @@ GitHub Actions workflow; CI workflow files are not part of this port.
 
 ## Export settings
 
-Create an Android export preset locally in the Godot editor. The preset should use:
+A ready-to-copy preset template is available at `docs/android/export_presets.cfg.example`.
+Copy it to the ignored path `Project/export_presets.cfg`, or create the same
+preset in the Godot editor. The preset should use:
 
 - Export path: `build/android/ProjectReignition.apk`
 - Package / unique name: `com.projectreignition.game`
