@@ -32,8 +32,9 @@ versioned.
 ## Known blockers before a release build
 
 1. `addons/ffmpeg/ffmpeg.gdextension` declares Android ARM64 libraries, but the
-   corresponding files are not currently present in the checkout. Video playback
-   must either receive Android ARM64 binaries or be disabled on Android.
+   corresponding files are not currently present in the checkout. Until those
+   binaries are supplied, video playback is intentionally hidden on Android while
+   its surrounding audio and animation timeline continues.
 2. A first-pass touch HUD is now connected as an autoload. It feeds the existing
    actions (`move_*`, `ui_*`, `button_jump`, `button_action`, `button_attack`,
    `button_brake`, `button_speedbreak`, `button_timebreak`, and `sys_pause`).
