@@ -11,3 +11,5 @@ this repository or pasted into chat.
 
 Godot 4.7 Android export templates currently support `net9.0`, so the workflow
 must install the .NET 9 SDK. The project target is kept aligned with that template.
+The export preset also enables the Linux Bionic runtime used by Godot's Android
+C# exporter; without it the APK can be produced without the managed assemblies.
