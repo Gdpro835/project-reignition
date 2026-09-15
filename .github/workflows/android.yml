@@ -83,8 +83,7 @@ jobs:
           text = path.read_text()
 
           if "dotnet/embed_build_outputs=true" not in text:
-              text +=
-              "\ndotnet/embed_build_outputs=true\n"
+              text += "\ndotnet/embed_build_outputs=true\n"
 
           text = text.replace(
               "dotnet/android_use_linux_bionic=true",
