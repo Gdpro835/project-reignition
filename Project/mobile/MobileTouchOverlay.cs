@@ -112,18 +112,20 @@ public partial class MobileTouchOverlay : Control
     private void SetButtonActions(string key, bool pressed)
     {
         if (!ButtonActions.TryGetValue(key, out StringName action)) return;
-        if (pressed) Input.ActionPress(action); else Input.ActionRelease(action);
+        SendAction(action, pressed ? 1f : 0f);
         if (key == "jump")
         {
-            if (pressed) { Input.ActionPress("ui_accept"); Input.ActionPress("sys_select"); SendKey(Key.V, true); }
-            else { Input.ActionRelease("ui_accept"); Input.ActionRelease("sys_select"); SendKey(Key.V, false); }
+            SendAction("ui_accept", pressed ? 1f : 0f);
+            SendAction("sys_select", pressed ? 1f : 0f);
+            SendKey(Key.V, pressed);
         }
         if (key == "action")
         {
-            if (pressed) { Input.ActionPress("ui_select"); Input.ActionPress("sys_select"); SendKey(Key.V, true); }
-            else { Input.ActionRelease("ui_select"); Input.ActionRelease("sys_select"); SendKey(Key.V, false); }
+            SendAction("ui_select", pressed ? 1f : 0f);
+            SendAction("sys_select", pressed ? 1f : 0f);
+            SendKey(Key.V, pressed);
         }
-        if (key == "pause") { if (pressed) Input.ActionPress("ui_cancel"); else Input.ActionRelease("ui_cancel"); }
+        if (key == "pause") SendAction("ui_cancel", pressed ? 1f : 0f);
     }
 
     private void UpdateJoystick(Vector2 position)
@@ -152,7 +154,17 @@ public partial class MobileTouchOverlay : Control
 
     private static void SetAction(StringName action, float strength)
     {
-        if (strength > 0) Input.ActionPress(action, strength); else Input.ActionRelease(action);
+        SendAction(action, strength);
+    }
+
+    private static void SendAction(StringName action, float strength)
+    {
+        Input.ParseInputEvent(new InputEventAction
+        {
+            Action = action,
+            Pressed = strength > 0,
+            Strength = strength
+        });
     }
 
     private static void SetDigitalKey(Key key, bool pressed, ref bool state)
