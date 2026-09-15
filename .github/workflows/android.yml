@@ -32,10 +32,11 @@ jobs:
       - name: Install Android SDK packages
         run: |
           yes | sdkmanager --licenses || true
+          sdkmanager --update || true
           sdkmanager \
             "platform-tools" \
             "platforms;android-35" \
-            "build-tools;35.0.0"
+            "build-tools;35.0.0" || true
 
       - name: Set up Godot .NET
         uses: chickensoft-games/setup-godot@v2
