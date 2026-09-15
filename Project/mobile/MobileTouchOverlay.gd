@@ -31,7 +31,7 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	var scene := get_tree().current_scene
-	var is_android := OS.has_feature("android")
+	var is_android := OS.has_feature("android") or OS.has_feature("mobile") or OS.get_name().to_lower() == "android"
 	var preview := bool(ProjectSettings.get_setting("mobile/touch_controls_preview", false))
 	var in_boot := scene != null and scene.scene_file_path == "res://interface/boot/Boot.tscn"
 	visible = (is_android or preview) and not in_boot
