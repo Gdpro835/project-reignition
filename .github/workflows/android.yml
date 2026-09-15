@@ -6,6 +6,11 @@ on:
 permissions:
   contents: read
 
+env:
+  GODOT_VERSION: "4.7.0"
+  PROJECT_DIR: "Project"
+  APK_PATH: "Project/build/android/ProjectReignition.apk"
+
 jobs:
   build-android:
     name: Build Android APK
@@ -14,6 +19,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          lfs: true
 
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -31,56 +38,131 @@ jobs:
 
       - name: Install Android SDK packages
         run: |
-          yes | sdkmanager --licenses || true
-          sdkmanager \
+          sdkmanager --install \
             "platform-tools" \
             "platforms;android-35" \
-            "build-tools;35.0.0"
+            "build-tools;35.0.1" \
+            "cmdline-tools;latest"
 
       - name: Set up Godot .NET
         uses: chickensoft-games/setup-godot@v2
         with:
-          version: "4.7.0"
+          version: ${{ env.GODOT_VERSION }}
           use-dotnet: true
           include-templates: true
 
+      - name: Verify tools
+        run: |
+          godot --version
+          dotnet --version
+          java -version
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
+
+      - name: Align Godot SDK version
+        working-directory: ${{ env.PROJECT_DIR }}
+        run: |
+          sed -i \
+            "s#Godot.NET.Sdk/4.7.0#Godot.NET.Sdk/${GODOT_VERSION}#g" \
+            "Sonic Remake Project.csproj"
+
+          grep "Godot.NET.Sdk" \
+            "Sonic Remake Project.csproj"
+
       - name: Prepare export preset
         run: |
-          cp docs/android/export_presets.cfg.example Project/export_presets.cfg
+          cp docs/android/export_presets.cfg.example \
+            Project/export_presets.cfg
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path("Project/export_presets.cfg")
+          text = path.read_text()
+
+          if "dotnet/embed_build_outputs=true" not in text:
+              text +=
+              "\ndotnet/embed_build_outputs=true\n"
+
+          text = text.replace(
+              "dotnet/android_use_linux_bionic=true",
+              "dotnet/android_use_linux_bionic=false"
+          )
+
+          path.write_text(text)
+          PY
+
           mkdir -p Project/build/android
 
+          echo "=== Android export preset ==="
+          cat Project/export_presets.cfg
+
       - name: Import Godot project
-        working-directory: Project
+        working-directory: ${{ env.PROJECT_DIR }}
         run: |
-          godot --headless --editor --quit --import
+          godot \
+            --headless \
+            --editor \
+            --quit \
+            --import
 
       - name: Restore C# dependencies
-        working-directory: Project
+        working-directory: ${{ env.PROJECT_DIR }}
         run: |
           dotnet restore \
             "Sonic Remake Project.csproj"
 
       - name: Build C# project
-        working-directory: Project
+        working-directory: ${{ env.PROJECT_DIR }}
         run: |
           dotnet build \
             "Sonic Remake Project.csproj" \
             --configuration ExportRelease \
             --no-restore
 
-      - name: Build Android APK
-        working-directory: Project
+      - name: Export Android APK
+        working-directory: ${{ env.PROJECT_DIR }}
+        env:
+          ANDROID_HOME: ${{ env.ANDROID_HOME }}
+          ANDROID_SDK_ROOT: ${{ env.ANDROID_HOME }}
         run: |
+          set -o pipefail
+
           godot \
             --headless \
+            --verbose \
             --path . \
             --export-release \
             "Android Release" \
-            build/android/ProjectReignition.apk
+            build/android/ProjectReignition.apk \
+            2>&1 | tee ../android-export.log
 
-      - name: Upload unsigned APK
+      - name: Check C# publish result
+        run: |
+          echo "=== C# publish diagnostics ==="
+
+          grep -iE \
+            "dotnet publish|publish exited|failed to build|failed to publish|assembly not found|android-arm64|linux-bionic|error NU|error CS" \
+            android-export.log \
+            || true
+
+          if grep -qiE \
+            "Failed to build project|Failed to publish|dotnet publish exited with code|project assembly not found" \
+            android-export.log
+          then
+            echo "C# Android publish failed."
+            exit 1
+          fi
+
+      - name: Check APK
+        run: |
+          test -f "${APK_PATH}"
+          ls -lh "${APK_PATH}"
+          file "${APK_PATH}"
+
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: Project-Reignition-Android
-          path: Project/build/android/ProjectReignition.apk
+          path: ${{ env.APK_PATH }}
           if-no-files-found: error
