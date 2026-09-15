@@ -109,8 +109,16 @@ public partial class MobileTouchOverlay : Control
     {
         if (!ButtonActions.TryGetValue(key, out StringName action)) return;
         if (pressed) Input.ActionPress(action); else Input.ActionRelease(action);
-        if (key == "jump") { if (pressed) Input.ActionPress("ui_accept"); else Input.ActionRelease("ui_accept"); }
-        if (key == "action") { if (pressed) Input.ActionPress("ui_select"); else Input.ActionRelease("ui_select"); }
+        if (key == "jump")
+        {
+            if (pressed) { Input.ActionPress("ui_accept"); Input.ActionPress("sys_select"); }
+            else { Input.ActionRelease("ui_accept"); Input.ActionRelease("sys_select"); }
+        }
+        if (key == "action")
+        {
+            if (pressed) { Input.ActionPress("ui_select"); Input.ActionPress("sys_select"); }
+            else { Input.ActionRelease("ui_select"); Input.ActionRelease("sys_select"); }
+        }
         if (key == "pause") { if (pressed) Input.ActionPress("ui_cancel"); else Input.ActionRelease("ui_cancel"); }
     }
 
@@ -145,12 +153,21 @@ public partial class MobileTouchOverlay : Control
         DrawCircle(joystickCenter, JoystickRadius, new Color(0.08f, 0.1f, 0.14f, .55f));
         DrawArc(joystickCenter, JoystickRadius, 0, Mathf.Tau, 48, new Color(.75f, .85f, 1, .8f), 4);
         DrawCircle(joystickPosition, 58, new Color(.3f, .58f, .95f, .8f));
+        var labels = new Dictionary<string, string>
+        {
+            ["jump"] = "J", ["action"] = "A", ["attack"] = "AT",
+            ["brake"] = "B", ["time"] = "T", ["speed"] = "S", ["pause"] = "P"
+        };
+        Font font = ThemeDB.FallbackFont;
         foreach (var button in buttonCenters)
         {
             bool pressed = false;
             foreach (string active in activeButtons.Values) if (active == button.Key) pressed = true;
             DrawCircle(button.Value, ButtonRadius, pressed ? new Color(.35f, .65f, 1, .92f) : new Color(.08f, .1f, .14f, .65f));
             DrawArc(button.Value, ButtonRadius, 0, Mathf.Tau, 32, new Color(.8f, .9f, 1, .85f), 3);
+            string label = labels[button.Key];
+            Vector2 textSize = font.GetStringSize(label, HorizontalAlignment.Left, -1, 26);
+            DrawString(font, button.Value + new Vector2(-textSize.X / 2, 9), label, HorizontalAlignment.Left, -1, 26, Colors.White);
         }
     }
 }
