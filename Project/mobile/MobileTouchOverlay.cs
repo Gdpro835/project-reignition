@@ -111,13 +111,13 @@ public partial class MobileTouchOverlay : Control
         if (pressed) Input.ActionPress(action); else Input.ActionRelease(action);
         if (key == "jump")
         {
-            if (pressed) { Input.ActionPress("ui_accept"); Input.ActionPress("sys_select"); }
-            else { Input.ActionRelease("ui_accept"); Input.ActionRelease("sys_select"); }
+            if (pressed) { Input.ActionPress("ui_accept"); Input.ActionPress("sys_select"); SendKey(Key.V, true); }
+            else { Input.ActionRelease("ui_accept"); Input.ActionRelease("sys_select"); SendKey(Key.V, false); }
         }
         if (key == "action")
         {
-            if (pressed) { Input.ActionPress("ui_select"); Input.ActionPress("sys_select"); }
-            else { Input.ActionRelease("ui_select"); Input.ActionRelease("sys_select"); }
+            if (pressed) { Input.ActionPress("ui_select"); Input.ActionPress("sys_select"); SendKey(Key.V, true); }
+            else { Input.ActionRelease("ui_select"); Input.ActionRelease("sys_select"); SendKey(Key.V, false); }
         }
         if (key == "pause") { if (pressed) Input.ActionPress("ui_cancel"); else Input.ActionRelease("ui_cancel"); }
     }
@@ -145,6 +145,20 @@ public partial class MobileTouchOverlay : Control
     private static void SetAction(StringName action, float strength)
     {
         if (strength > 0) Input.ActionPress(action, strength); else Input.ActionRelease(action);
+    }
+
+    // The menu reads the project's keyboard actions (V/C/arrows), so also
+    // inject the equivalent key event. This makes touch input follow exactly
+    // the same path as the existing menu controls.
+    private static void SendKey(Key key, bool pressed)
+    {
+        Input.ParseInputEvent(new InputEventKey
+        {
+            Keycode = key,
+            PhysicalKeycode = key,
+            Pressed = pressed,
+            Echo = false
+        });
     }
 
     public override void _Draw()
