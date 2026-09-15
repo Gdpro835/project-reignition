@@ -1,4 +1,4 @@
-extends CanvasLayer
+extends Control
 ## First-pass Android touch controls.
 ## The overlay feeds the existing InputMap actions, so gameplay and menus do not
 ## need a separate mobile input path.
@@ -23,7 +23,9 @@ var button_actions := {
 }
 
 func _ready() -> void:
-	layer = 100
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	z_index = 100
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	set_process_input(true)
 	queue_redraw()
 
