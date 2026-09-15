@@ -13,6 +13,10 @@ public partial class MobileTouchOverlay : Control
     private Vector2 joystickCenter;
     private Vector2 joystickPosition;
     private int joystickTouch = -1;
+    private bool keyLeft;
+    private bool keyRight;
+    private bool keyUp;
+    private bool keyDown;
     private readonly Dictionary<int, string> activeButtons = new();
     private readonly Dictionary<string, Vector2> buttonCenters = new();
 
@@ -140,11 +144,22 @@ public partial class MobileTouchOverlay : Control
         SetAction("move_up", up); SetAction("move_down", down);
         SetAction("ui_left", left); SetAction("ui_right", right);
         SetAction("ui_up", up); SetAction("ui_down", down);
+        SetDigitalKey(Key.Left, left > 0, ref keyLeft);
+        SetDigitalKey(Key.Right, right > 0, ref keyRight);
+        SetDigitalKey(Key.Up, up > 0, ref keyUp);
+        SetDigitalKey(Key.Down, down > 0, ref keyDown);
     }
 
     private static void SetAction(StringName action, float strength)
     {
         if (strength > 0) Input.ActionPress(action, strength); else Input.ActionRelease(action);
+    }
+
+    private static void SetDigitalKey(Key key, bool pressed, ref bool state)
+    {
+        if (pressed == state) return;
+        state = pressed;
+        SendKey(key, pressed);
     }
 
     // The menu reads the project's keyboard actions (V/C/arrows), so also
