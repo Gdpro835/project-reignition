@@ -1,4 +1,5 @@
 using Godot;
+using Project.Core;
 using System.Collections.Generic;
 
 namespace Project.Mobile;
@@ -118,12 +119,14 @@ public partial class MobileTouchOverlay : Control
             SendAction("ui_accept", pressed ? 1f : 0f);
             SendAction("sys_select", pressed ? 1f : 0f);
             SendKey(Key.V, pressed);
+            SendMouseClick(pressed);
         }
         if (key == "action")
         {
             SendAction("ui_select", pressed ? 1f : 0f);
             SendAction("sys_select", pressed ? 1f : 0f);
             SendKey(Key.V, pressed);
+            SendMouseClick(pressed);
         }
         if (key == "pause") SendAction("ui_cancel", pressed ? 1f : 0f);
     }
@@ -172,6 +175,18 @@ public partial class MobileTouchOverlay : Control
         if (pressed == state) return;
         state = pressed;
         SendKey(key, pressed);
+    }
+
+    private static void SendMouseClick(bool pressed)
+    {
+        Runtime.Instance.IsUsingMouse = true;
+        Input.ParseInputEvent(new InputEventMouseButton
+        {
+            ButtonIndex = MouseButton.Left,
+            Pressed = pressed,
+            Position = Vector2.Zero,
+            GlobalPosition = Vector2.Zero
+        });
     }
 
     // The menu reads the project's keyboard actions (V/C/arrows), so also
