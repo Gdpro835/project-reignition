@@ -34,15 +34,17 @@ public partial class MobileTouchOverlay : Control
         ZIndex = 100;
         MouseFilter = MouseFilterEnum.Ignore;
         SetProcessInput(true);
+        ProcessMode = ProcessModeEnum.Always;
+        Visible = true;
         UpdateLayout();
         QueueRedraw();
     }
 
     public override void _Process(double delta)
     {
-        bool mobile = OS.GetName().ToLowerInvariant() == "android" || OS.HasFeature("mobile");
-        bool preview = (bool)ProjectSettings.GetSetting("mobile/touch_controls_preview", false);
-        Visible = mobile || preview;
+        // The overlay is deliberately always enabled. The Android export is the
+        // mobile target, and this avoids relying on feature tags that can differ
+        // between Godot/.NET Android templates.
         if (Visible)
         {
             UpdateLayout();
