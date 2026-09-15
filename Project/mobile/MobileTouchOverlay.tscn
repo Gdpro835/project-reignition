@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://mobile/MobileTouchOverlay.gd" id="1_touch"]
+[ext_resource type="Script" path="res://mobile/MobileTouchOverlay.cs" id="1_touch"]
 
 [node name="MobileTouchOverlay" type="Control"]
 layout_mode = 3
