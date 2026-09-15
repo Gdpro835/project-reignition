@@ -14,6 +14,9 @@ public partial class MobileTouchOverlay : Control
     private Vector2 joystickCenter;
     private Vector2 joystickPosition;
     private int joystickTouch = -1;
+    private Vector2 virtualMousePosition;
+    private ulong lastTapTime;
+    private Vector2 lastTapPosition;
     private bool keyLeft;
     private bool keyRight;
     private bool keyUp;
@@ -71,11 +74,30 @@ public partial class MobileTouchOverlay : Control
         if (!Visible) return;
         if (@event is InputEventScreenTouch touch)
         {
-            if (touch.Pressed) PressAt(touch.Index, touch.Position);
+            if (touch.Pressed)
+            {
+                virtualMousePosition = touch.Position;
+                SendMouseMotion(virtualMousePosition);
+                ulong now = Time.GetTicksMsec();
+                bool doubleTap = now - lastTapTime <= 350 && virtualMousePosition.DistanceTo(lastTapPosition) <= 70f;
+                lastTapTime = now;
+                lastTapPosition = virtualMousePosition;
+                if (doubleTap)
+                {
+                    SendMouseClick(true);
+                    SendMouseClick(false);
+                    lastTapTime = 0;
+                }
+                PressAt(touch.Index, touch.Position);
+            }
             else ReleaseTouch(touch.Index);
         }
-        else if (@event is InputEventScreenDrag drag && drag.Index == joystickTouch)
-            UpdateJoystick(drag.Position);
+        else if (@event is InputEventScreenDrag drag)
+        {
+            virtualMousePosition = drag.Position;
+            SendMouseMotion(virtualMousePosition);
+            if (drag.Index == joystickTouch) UpdateJoystick(drag.Position);
+        }
     }
 
     private void PressAt(int index, Vector2 position)
@@ -177,15 +199,26 @@ public partial class MobileTouchOverlay : Control
         SendKey(key, pressed);
     }
 
-    private static void SendMouseClick(bool pressed)
+    private void SendMouseClick(bool pressed)
     {
         Runtime.Instance.IsUsingMouse = true;
         Input.ParseInputEvent(new InputEventMouseButton
         {
             ButtonIndex = MouseButton.Left,
             Pressed = pressed,
-            Position = Vector2.Zero,
-            GlobalPosition = Vector2.Zero
+            Position = virtualMousePosition,
+            GlobalPosition = virtualMousePosition
+        });
+    }
+
+    private static void SendMouseMotion(Vector2 position)
+    {
+        Runtime.Instance.IsUsingMouse = true;
+        Input.ParseInputEvent(new InputEventMouseMotion
+        {
+            Position = position,
+            GlobalPosition = position,
+            Relative = Vector2.Zero
         });
     }
 
