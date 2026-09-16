@@ -813,6 +813,7 @@ public partial class IfritGolem : Node3D
 		Vector3 targetPosition = HeadHurtbox.GlobalPosition;
 		float targetRotation = (samplePosition - targetPosition).Flatten().AngleTo(Vector2.Down);
 		float activeRotation = (Player.PathFollower.GlobalPosition - targetPosition).Flatten().AngleTo(Vector2.Down);
+
 		// Player is out of range
 		if (ExtensionMethods.DeltaAngleRad(activeRotation, Root.Rotation.Y) > Mathf.Pi * .4f ||
 			ExtensionMethods.DeltaAngleRad(targetRotation, Root.Rotation.Y) > Mathf.Pi * .4f)
@@ -820,7 +821,6 @@ public partial class IfritGolem : Node3D
 			// Cancel special attack early
 			return true;
 		}
-
 		return false;
 	}
 
@@ -1057,11 +1057,13 @@ public partial class IfritGolem : Node3D
 			currentSector++;
 		currentSector = WrapClampSector(currentSector);
 
-		specialAttackTimer = specialAttackCount = 0;
+		specialAttackCount = 0;
+		specialAttackTimer = SpecialAttackWindupLength;
 		specialAttackIntervalCounter = SpecialAttackInterval;
 		currentState = GolemState.SpecialAttack;
 	}
 
+	private readonly float SpecialAttackWindupLength = 1f;
 	private readonly float LaserSpecialAttackInterval = 1.5f;
 	private readonly float TankSpecialAttackInterval = .5f;
 	private void ProcessSpecialAttack()
@@ -1069,14 +1071,12 @@ public partial class IfritGolem : Node3D
 		if (specialAttackCount > targetSpecialAttackCount)
 			return;
 
-		float targetTime = isLaserSpecialAttack ? LaserSpecialAttackInterval : TankSpecialAttackInterval;
-		specialAttackTimer = Mathf.MoveToward(specialAttackTimer, targetTime, PhysicsManager.physicsDelta);
-
-		if (!Mathf.IsEqualApprox(specialAttackTimer, targetTime))
+		specialAttackTimer = Mathf.MoveToward(specialAttackTimer, 0f, PhysicsManager.physicsDelta);
+		if (!Mathf.IsZeroApprox(specialAttackTimer))
 			return;
 
 		specialAttackCount++;
-		specialAttackTimer = 0;
+		specialAttackTimer = isLaserSpecialAttack ? LaserSpecialAttackInterval : TankSpecialAttackInterval;
 		if (specialAttackCount > targetSpecialAttackCount || AttemptSkipSpecialAttack())
 		{
 			// Finished special attacks
