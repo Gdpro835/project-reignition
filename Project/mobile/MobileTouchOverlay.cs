@@ -14,7 +14,7 @@ public partial class MobileTouchOverlay : Control
     private Vector2 joystickCenter;
     private Vector2 joystickPosition;
     private int joystickTouch = -1;
-    private Vector2 virtualMousePosition;
+    private Vector2 touchPosition;
     private Vector2 touchStartPosition;
     private bool menuTouchMoved;
     private bool keyLeft;
@@ -39,7 +39,7 @@ public partial class MobileTouchOverlay : Control
         MouseFilter = MouseFilterEnum.Ignore;
         SetProcessInput(true);
         UpdateLayout();
-        virtualMousePosition = GetViewportRect().Size * 0.5f;
+        touchPosition = GetViewportRect().Size * 0.5f;
         QueueRedraw();
     }
 
@@ -83,8 +83,8 @@ public partial class MobileTouchOverlay : Control
         {
             if (touch.Pressed)
             {
-                virtualMousePosition = touch.Position;
-                SendMouseMotion(virtualMousePosition);
+                touchPosition = touch.Position;
+                SendMouseMotion(touchPosition);
                 touchStartPosition = touch.Position;
                 menuTouchMoved = false;
                 if (!IsMenuMode()) PressAt(touch.Index, touch.Position);
@@ -101,8 +101,8 @@ public partial class MobileTouchOverlay : Control
         }
         else if (@event is InputEventScreenDrag drag)
         {
-            virtualMousePosition = drag.Position;
-            SendMouseMotion(virtualMousePosition);
+            touchPosition = drag.Position;
+            SendMouseMotion(touchPosition);
             if (IsMenuMode())
                 menuTouchMoved = menuTouchMoved || drag.Position.DistanceTo(touchStartPosition) > 24f;
             else if (drag.Index == joystickTouch) UpdateJoystick(drag.Position);
@@ -215,8 +215,8 @@ public partial class MobileTouchOverlay : Control
         {
             ButtonIndex = MouseButton.Left,
             Pressed = pressed,
-            Position = virtualMousePosition,
-            GlobalPosition = virtualMousePosition
+            Position = touchPosition,
+            GlobalPosition = touchPosition
         });
     }
 
@@ -248,12 +248,7 @@ public partial class MobileTouchOverlay : Control
     public override void _Draw()
     {
         if (!Visible) return;
-        if (IsMenuMode())
-        {
-            DrawCircle(virtualMousePosition, 22f, new Color(1f, 0.85f, 0.2f, 0.9f));
-            DrawArc(virtualMousePosition, 30f, 0f, Mathf.Tau, 32, Colors.White, 3f);
-            return;
-        }
+        if (IsMenuMode()) return;
         DrawCircle(joystickCenter, JoystickRadius, new Color(0.08f, 0.1f, 0.14f, .55f));
         DrawArc(joystickCenter, JoystickRadius, 0, Mathf.Tau, 48, new Color(.75f, .85f, 1, .8f), 4);
         DrawCircle(joystickPosition, 58, new Color(.3f, .58f, .95f, .8f));
