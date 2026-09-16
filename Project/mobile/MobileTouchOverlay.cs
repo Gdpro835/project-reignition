@@ -15,8 +15,8 @@ public partial class MobileTouchOverlay : Control
     private Vector2 joystickPosition;
     private int joystickTouch = -1;
     private Vector2 virtualMousePosition;
-    private ulong lastTapTime;
-    private Vector2 lastTapPosition;
+    private Vector2 touchStartPosition;
+    private bool menuTouchMoved;
     private bool keyLeft;
     private bool keyRight;
     private bool keyUp;
@@ -85,25 +85,27 @@ public partial class MobileTouchOverlay : Control
             {
                 virtualMousePosition = touch.Position;
                 SendMouseMotion(virtualMousePosition);
-                ulong now = Time.GetTicksMsec();
-                bool doubleTap = now - lastTapTime <= 350 && virtualMousePosition.DistanceTo(lastTapPosition) <= 70f;
-                lastTapTime = now;
-                lastTapPosition = virtualMousePosition;
-                if (doubleTap)
+                touchStartPosition = touch.Position;
+                menuTouchMoved = false;
+                if (!IsMenuMode()) PressAt(touch.Index, touch.Position);
+            }
+            else if (IsMenuMode())
+            {
+                if (!menuTouchMoved)
                 {
                     SendMouseClick(true);
                     SendMouseClick(false);
-                    lastTapTime = 0;
                 }
-                if (!IsMenuMode()) PressAt(touch.Index, touch.Position);
             }
-            else if (!IsMenuMode()) ReleaseTouch(touch.Index);
+            else ReleaseTouch(touch.Index);
         }
         else if (@event is InputEventScreenDrag drag)
         {
             virtualMousePosition = drag.Position;
             SendMouseMotion(virtualMousePosition);
-            if (!IsMenuMode() && drag.Index == joystickTouch) UpdateJoystick(drag.Position);
+            if (IsMenuMode())
+                menuTouchMoved = menuTouchMoved || drag.Position.DistanceTo(touchStartPosition) > 24f;
+            else if (drag.Index == joystickTouch) UpdateJoystick(drag.Position);
         }
     }
 
