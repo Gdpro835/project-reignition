@@ -39,7 +39,14 @@ public partial class MobileTouchOverlay : Control
         MouseFilter = MouseFilterEnum.Ignore;
         SetProcessInput(true);
         UpdateLayout();
+        virtualMousePosition = GetViewportRect().Size * 0.5f;
         QueueRedraw();
+    }
+
+    private bool IsMenuMode()
+    {
+        string scenePath = GetTree().CurrentScene?.SceneFilePath ?? string.Empty;
+        return scenePath.Contains("res://interface/menu", System.StringComparison.OrdinalIgnoreCase);
     }
 
     public override void _Process(double delta)
@@ -88,15 +95,15 @@ public partial class MobileTouchOverlay : Control
                     SendMouseClick(false);
                     lastTapTime = 0;
                 }
-                PressAt(touch.Index, touch.Position);
+                if (!IsMenuMode()) PressAt(touch.Index, touch.Position);
             }
-            else ReleaseTouch(touch.Index);
+            else if (!IsMenuMode()) ReleaseTouch(touch.Index);
         }
         else if (@event is InputEventScreenDrag drag)
         {
             virtualMousePosition = drag.Position;
             SendMouseMotion(virtualMousePosition);
-            if (drag.Index == joystickTouch) UpdateJoystick(drag.Position);
+            if (!IsMenuMode() && drag.Index == joystickTouch) UpdateJoystick(drag.Position);
         }
     }
 
@@ -239,6 +246,12 @@ public partial class MobileTouchOverlay : Control
     public override void _Draw()
     {
         if (!Visible) return;
+        if (IsMenuMode())
+        {
+            DrawCircle(virtualMousePosition, 22f, new Color(1f, 0.85f, 0.2f, 0.9f));
+            DrawArc(virtualMousePosition, 30f, 0f, Mathf.Tau, 32, Colors.White, 3f);
+            return;
+        }
         DrawCircle(joystickCenter, JoystickRadius, new Color(0.08f, 0.1f, 0.14f, .55f));
         DrawArc(joystickCenter, JoystickRadius, 0, Mathf.Tau, 48, new Color(.75f, .85f, 1, .8f), 4);
         DrawCircle(joystickPosition, 58, new Color(.3f, .58f, .95f, .8f));
