@@ -267,6 +267,40 @@ public partial class Runtime : Node
 
 	public override void _Input(InputEvent e)
 	{
+		// Treat Android touch input as the same mouse input used by the existing
+		// menus. This keeps every menu's mouse hover/click code working without
+		// having to duplicate menu logic for touch screens.
+		if (e is InputEventScreenTouch touch)
+		{
+			IsUsingMouse = true;
+			Input.ParseInputEvent(new InputEventMouseMotion
+			{
+				Position = touch.Position,
+				GlobalPosition = touch.Position,
+				Relative = Vector2.Zero
+			});
+			Input.ParseInputEvent(new InputEventMouseButton
+			{
+				ButtonIndex = MouseButton.Left,
+				Pressed = touch.Pressed,
+				Position = touch.Position,
+				GlobalPosition = touch.Position
+			});
+			return;
+		}
+
+		if (e is InputEventScreenDrag drag)
+		{
+			IsUsingMouse = true;
+			Input.ParseInputEvent(new InputEventMouseMotion
+			{
+				Position = drag.Position,
+				GlobalPosition = drag.Position,
+				Relative = drag.Relative
+			});
+			return;
+		}
+
 		EmitSignal(SignalName.EventInputed, e);
 
 		if (e is InputEventMouseMotion)

@@ -78,7 +78,7 @@ public partial class MobileTouchOverlay : Control
 
     public override void _Input(InputEvent @event)
     {
-        if (!Visible) return;
+        if (!Visible || IsMenuMode()) return;
         if (@event is InputEventScreenTouch touch)
         {
             if (touch.Pressed)
