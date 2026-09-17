@@ -37,7 +37,8 @@ namespace Project.Interface.Menus
 			if (isCutsceneActive)
 			{
 				if ((Runtime.Instance.IsActionJustPressed("sys_pause", "ui_accept") && !Input.IsActionJustPressed("toggle_fullscreen")) ||
-					Runtime.Instance.IsActionJustPressed("sys_select", "ui_select"))
+					Runtime.Instance.IsActionJustPressed("sys_select", "ui_select") ||
+					Runtime.Instance.ConsumeTouchClick())
 					FinishCutscene();
 
 				return;

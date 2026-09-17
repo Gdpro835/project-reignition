@@ -171,7 +171,8 @@ public partial class Menu : Control
 	protected readonly float SelectionScrollingInterval = .1f;
 	protected virtual void ProcessMenu()
 	{
-		isConfirmedWithMouse = Runtime.Instance.IsUsingMouse && Input.IsActionJustPressed("mouse_left");
+		isConfirmedWithMouse = Runtime.Instance.IsUsingMouse &&
+			(Input.IsActionJustPressed("mouse_left") || Runtime.Instance.ConsumeTouchClick());
 		if (Runtime.Instance.IsActionJustPressed("sys_select", "ui_select") || isConfirmedWithMouse)
 		{
 			Confirm();

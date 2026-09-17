@@ -237,6 +237,14 @@ public partial class Runtime : Node
 	public bool IsUsingController => ActiveController != -1;
 	/// <summary> Set this to track whether we're using the mouse in a menu. </summary>
 	public bool IsUsingMouse { get; set; }
+	private bool touchClickPending;
+
+	public bool ConsumeTouchClick()
+	{
+		bool pending = touchClickPending;
+		touchClickPending = false;
+		return pending;
+	}
 	public int ActiveController { get; private set; }
 
 	/// <summary> Gets the ControllerType of the active controller. </summary>
@@ -273,6 +281,8 @@ public partial class Runtime : Node
 		if (e is InputEventScreenTouch touch)
 		{
 			IsUsingMouse = true;
+			if (touch.Pressed)
+				touchClickPending = true;
 			Input.ParseInputEvent(new InputEventMouseMotion
 			{
 				Position = touch.Position,
