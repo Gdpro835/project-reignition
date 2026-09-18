@@ -280,34 +280,20 @@ public partial class Runtime : Node
 		// having to duplicate menu logic for touch screens.
 		if (e is InputEventScreenTouch touch)
 		{
+			// Godot is configured to emit the matching mouse event for touch.
+			// Keep the touch flag for menu controllers, but do not synthesize a
+			// second mouse event here.
 			IsUsingMouse = true;
 			if (touch.Pressed)
 				touchClickPending = true;
-			Input.ParseInputEvent(new InputEventMouseMotion
-			{
-				Position = touch.Position,
-				GlobalPosition = touch.Position,
-				Relative = Vector2.Zero
-			});
-			Input.ParseInputEvent(new InputEventMouseButton
-			{
-				ButtonIndex = MouseButton.Left,
-				Pressed = touch.Pressed,
-				Position = touch.Position,
-				GlobalPosition = touch.Position
-			});
+			EmitSignal(SignalName.EventInputed, e);
 			return;
 		}
 
 		if (e is InputEventScreenDrag drag)
 		{
 			IsUsingMouse = true;
-			Input.ParseInputEvent(new InputEventMouseMotion
-			{
-				Position = drag.Position,
-				GlobalPosition = drag.Position,
-				Relative = drag.Relative
-			});
+			EmitSignal(SignalName.EventInputed, e);
 			return;
 		}
 
