@@ -15,7 +15,13 @@ public class SkillRing
 	/// <summary> Checks whether a skill is equipped and has the correct augment index. </summary>
 	public bool IsSkillEquipped(SkillResource skill) => IsSkillEquipped(skill.Key) && GetAugmentIndex(skill.Key) == skill.AugmentIndex;
 	/// <summary> Checks whether a skill's key is equipped. </summary>
-	public bool IsSkillEquipped(SkillKey key) => EquippedSkills.Contains(key);
+	public bool IsSkillEquipped(SkillKey key)
+	{
+		if (key == SkillKey.Character && !SaveManager.Config.areCharaModsEnabled)
+			return false;
+
+		return EquippedSkills.Contains(key);
+	}
 	/// <summary> Returns the augment of a particular skill. </summary>
 	public int GetAugmentIndex(SkillKey key) => EquippedAugments.TryGetValue(key, out int currentAugmentIndex) ? currentAugmentIndex : 0;
 

@@ -126,4 +126,5 @@ public partial class SkillResource : Resource
 	[Export(PropertyHint.File)] public string NormalModel { get; private set; }
 	[Export(PropertyHint.File)] public string SuperModel { get; private set; }
 	[Export] public SFXLibraryResource VoiceLibraryOverride { get; private set; }
+	[Export] public bool MuteGameplayVoice { get; private set; } = true;
 }

@@ -512,6 +512,14 @@ public partial class SaveManager : Node
 				areLangModsEnabled = (bool)var;
 
 		}
+
+		public static ConfigData Default()
+		{
+			ConfigData data = new();
+			data.textLocale = AutoDetectTextLocale();
+			data.voiceLocale = AutoDetectVoiceLocale();
+			return data;
+		}
 	}
 
 	public static LocalizationResource AutoDetectTextLocale() => FindTextLocale(OS.GetLocaleLanguage());
@@ -585,7 +593,7 @@ public partial class SaveManager : Node
 		}
 		catch // Load Default settings
 		{
-			Config = new();
+			Config = ConfigData.Default();
 		}
 
 		if (Config.textLocale == null)

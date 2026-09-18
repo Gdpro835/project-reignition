@@ -271,9 +271,14 @@ public partial class SaveSelect : Menu
 				SaveManager.ActiveSkillRing.EquipSkill(SkillKey.Autorun);
 				SaveManager.ActiveSkillRing.EquipSkill(SkillKey.ChargeJump);
 			}
+			else if (popupSelection == 1)
+			{
+				SaveManager.ActiveSkillRing.EquipSkill(SkillKey.VariableJumpHeight);
+			}
 			else if (popupSelection == 2)
 			{
 				SaveManager.ActiveSkillRing.EquipSkill(SkillKey.FreeRoam);
+				SaveManager.ActiveSkillRing.EquipSkill(SkillKey.VariableJumpHeight);
 			}
 
 			SaveManager.SaveGameData();
