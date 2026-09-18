@@ -278,7 +278,24 @@ public partial class Runtime : Node
 		// Treat Android touch input as the same mouse input used by the existing
 		// menus. This keeps every menu's mouse hover/click code working without
 		// having to duplicate menu logic for touch screens.
-		if (e is InputEventScreenTouch || e is InputEventScreenDrag)
+		if (e is InputEventScreenTouch touch)
+		{
+			IsUsingMouse = true;
+			// The title screen advances through the existing select action;
+			// preserve that behavior while the other menus handle touch directly.
+			string scenePath = GetTree().CurrentScene?.SceneFilePath ?? string.Empty;
+			if (scenePath.Contains("res://interface/menu/title", StringComparison.OrdinalIgnoreCase))
+			{
+				if (touch.Pressed)
+					Input.ActionPress("sys_select");
+				else
+					Input.ActionRelease("sys_select");
+			}
+			EmitSignal(SignalName.EventInputed, e);
+			return;
+		}
+
+		if (e is InputEventScreenDrag)
 		{
 			IsUsingMouse = true;
 			EmitSignal(SignalName.EventInputed, e);

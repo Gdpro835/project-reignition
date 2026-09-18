@@ -60,7 +60,9 @@ public partial class Menu : Control
 			if (touch.Pressed)
 			{
 				touchTarget = FindTouchControl(this, touch.Position);
-				touchActive = touchTarget != null;
+				// The title screen is a press-start surface rather than a list of
+				// clickable controls, so any tap on it is a valid confirmation.
+				touchActive = touchTarget != null || GetType().Name == "Title";
 				if (touchTarget != null)
 					touchTarget.EmitSignal(Control.SignalName.MouseEntered);
 			}
