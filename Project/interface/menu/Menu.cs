@@ -60,6 +60,7 @@ public partial class Menu : Control
 
 		if (@event is InputEventScreenTouch touch)
 		{
+			Runtime.Instance.IsUsingMouse = false;
 			if (touch.Pressed)
 			{
 				touchStartPosition = touch.Position;
