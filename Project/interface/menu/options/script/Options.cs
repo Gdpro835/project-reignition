@@ -264,7 +264,7 @@ public partial class Options : Menu
 				}
 
 				if (currentSubmenu == Submenus.ResetSettings)
-					SaveManager.Config = new();
+					SaveManager.Config = SaveManager.ConfigData.Default();
 
 				SaveManager.ResetInputMap();
 				resetAnimator.Play("confirm");
