@@ -48,7 +48,8 @@ public partial class Menu : Control
 	/// <summary> Tracks whether confirm was pressed via mouse. </summary>
 	protected bool isConfirmedWithMouse;
 	private bool touchActive;
-	private Control touchTarget;
+	private Vector2 touchStartPosition;
+	private const float TouchSwipeThreshold = 64f;
 
 	public override void _Input(InputEvent @event)
 	{
@@ -59,38 +60,35 @@ public partial class Menu : Control
 		{
 			if (touch.Pressed)
 			{
-				touchTarget = FindTouchControl(this, touch.Position);
-				// The title screen is a press-start surface rather than a list of
-				// clickable controls, so any tap on it is a valid confirmation.
-				touchActive = touchTarget != null || GetType().Name == "Title";
-				if (touchTarget != null)
-					touchTarget.EmitSignal(Control.SignalName.MouseEntered);
+				touchStartPosition = touch.Position;
+				touchActive = true;
 			}
 			else if (touchActive)
 			{
-				isConfirmedWithMouse = true;
-				Confirm();
+				Vector2 swipe = touch.Position - touchStartPosition;
 				touchActive = false;
-				touchTarget = null;
+				if (swipe.Length() >= TouchSwipeThreshold && GetType().Name != "Title")
+					ProcessTouchSwipe(swipe);
+				else
+				{
+					isConfirmedWithMouse = true;
+					Confirm();
+				}
 			}
 		}
 	}
 
-	private static Control FindTouchControl(Node node, Vector2 position)
+	private void ProcessTouchSwipe(Vector2 swipe)
 	{
-		Control result = null;
-		foreach (Node child in node.GetChildren())
-		{
-			if (child is not Control control || control.MouseFilter == Control.MouseFilterEnum.Ignore)
-				continue;
+		StringName action;
+		if (Mathf.Abs(swipe.X) > Mathf.Abs(swipe.Y))
+			action = swipe.X > 0 ? "ui_right" : "ui_left";
+		else
+			action = swipe.Y > 0 ? "ui_down" : "ui_up";
 
-			if (!control.GetGlobalRect().HasPoint(position))
-				continue;
-
-			Control nested = FindTouchControl(control, position);
-			result = nested ?? control;
-		}
-		return result;
+		Input.ActionPress(action);
+		UpdateSelection();
+		Input.ActionRelease(action);
 	}
 
 	[Export]
