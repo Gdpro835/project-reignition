@@ -100,10 +100,15 @@ public partial class SoundManager : Control
 
 	public void PlayDialog(DialogTrigger dialog)
 	{
-		if (dialog.DialogCount == 0 || SaveManager.ActiveSkillRing.IsSkillEquipped(Gameplay.SkillKey.Character)
-			|| DebugManager.Instance.DisableDialog || SaveManager.Config.isDialogDisabled)
-		{
+		if (dialog.DialogCount == 0 || DebugManager.Instance.DisableDialog || SaveManager.Config.isDialogDisabled)
 			return; // No dialog
+
+		if (SaveManager.ActiveSkillRing.IsSkillEquipped(SkillKey.Character))
+		{
+			SkillResource skill = Runtime.Instance.SkillList.GetSkill(SkillKey.Character);
+			skill = skill.GetAugment(SaveManager.ActiveSkillRing.GetAugmentIndex(SkillKey.Character));
+			if (skill.MuteGameplayVoice)
+				return;
 		}
 
 		Visible = !SaveManager.Config.isSubtitleDisabled && !dialog.disableSubtitles;
