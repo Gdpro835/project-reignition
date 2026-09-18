@@ -620,7 +620,7 @@ debug_pause_shader={
 [input_devices]
 
 pointing/emulate_touch_from_mouse=true
-pointing/emulate_mouse_from_touch=true
+pointing/emulate_mouse_from_touch=false
 sensors/enable_accelerometer=true
 sensors/enable_gyroscope=true
 
