@@ -47,6 +47,49 @@ public partial class Menu : Control
 
 	/// <summary> Tracks whether confirm was pressed via mouse. </summary>
 	protected bool isConfirmedWithMouse;
+	private bool touchActive;
+	private Control touchTarget;
+
+	public override void _Input(InputEvent @event)
+	{
+		if (!isProcessing || TransitionManager.IsTransitionActive)
+			return;
+
+		if (@event is InputEventScreenTouch touch)
+		{
+			if (touch.Pressed)
+			{
+				touchTarget = FindTouchControl(this, touch.Position);
+				touchActive = touchTarget != null;
+				if (touchTarget != null)
+					touchTarget.EmitSignal(Control.SignalName.MouseEntered);
+			}
+			else if (touchActive)
+			{
+				isConfirmedWithMouse = true;
+				Confirm();
+				touchActive = false;
+				touchTarget = null;
+			}
+		}
+	}
+
+	private static Control FindTouchControl(Node node, Vector2 position)
+	{
+		Control result = null;
+		foreach (Node child in node.GetChildren())
+		{
+			if (child is not Control control || control.MouseFilter == Control.MouseFilterEnum.Ignore)
+				continue;
+
+			if (!control.GetGlobalRect().HasPoint(position))
+				continue;
+
+			Control nested = FindTouchControl(control, position);
+			result = nested ?? control;
+		}
+		return result;
+	}
 
 	[Export]
 	public BGMPlayer bgm;
