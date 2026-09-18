@@ -284,7 +284,7 @@ public partial class Runtime : Node
 			// The title screen advances through the existing select action;
 			// preserve that behavior while the other menus handle touch directly.
 			string scenePath = GetTree().CurrentScene?.SceneFilePath ?? string.Empty;
-			if (scenePath.Contains("res://interface/menu/title", StringComparison.OrdinalIgnoreCase))
+			if (scenePath.Contains("res://interface/menu/title", System.StringComparison.OrdinalIgnoreCase))
 			{
 				if (touch.Pressed)
 					Input.ActionPress("sys_select");
