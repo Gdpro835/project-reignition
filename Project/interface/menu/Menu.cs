@@ -49,7 +49,9 @@ public partial class Menu : Control
 	protected bool isConfirmedWithMouse;
 	private bool touchActive;
 	private Vector2 touchStartPosition;
+	private ulong touchStartTime;
 	private const float TouchSwipeThreshold = 64f;
+	private const ulong TouchCancelHoldMilliseconds = 650;
 
 	public override void _Input(InputEvent @event)
 	{
@@ -61,12 +63,21 @@ public partial class Menu : Control
 			if (touch.Pressed)
 			{
 				touchStartPosition = touch.Position;
+				touchStartTime = Time.GetTicksMsec();
 				touchActive = true;
 			}
 			else if (touchActive)
 			{
 				Vector2 swipe = touch.Position - touchStartPosition;
+				ulong holdTime = Time.GetTicksMsec() - touchStartTime;
 				touchActive = false;
+
+				if (GetType().Name != "Title" && holdTime >= TouchCancelHoldMilliseconds)
+				{
+					Cancel();
+					return;
+				}
+
 				if (swipe.Length() >= TouchSwipeThreshold && GetType().Name != "Title")
 					ProcessTouchSwipe(swipe);
 				else
