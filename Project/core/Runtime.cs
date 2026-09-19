@@ -33,6 +33,38 @@ public partial class Runtime : Node
 	{
 		TransitionManager.Instance.TransitionProcess += ClearPearls;
 		AreShadersPausable = !Engine.IsEditorHint();
+
+		if (OS.GetName().Equals("Android", System.StringComparison.OrdinalIgnoreCase))
+		{
+			GetTree().SceneChanged += OptimizeAndroidScene;
+			CallDeferred(MethodName.OptimizeAndroidScene, GetTree().CurrentScene);
+		}
+	}
+
+	private void OptimizeAndroidScene(Node scene)
+	{
+		if (scene == null)
+			return;
+
+		ApplyAndroidEffectProfile(scene);
+	}
+
+	private static void ApplyAndroidEffectProfile(Node node)
+	{
+		if (node is WorldEnvironment worldEnvironment && worldEnvironment.Environment != null)
+		{
+			worldEnvironment.Environment.GlowEnabled = false;
+			worldEnvironment.Environment.SsaoEnabled = false;
+			worldEnvironment.Environment.SsilEnabled = false;
+		}
+
+		if (node is GPUParticles3D particles3D)
+			particles3D.Amount = Mathf.Max(8, particles3D.Amount / 2);
+		else if (node is GPUParticles2D particles2D)
+			particles2D.Amount = Mathf.Max(8, particles2D.Amount / 2);
+
+		foreach (Node child in node.GetChildren())
+			ApplyAndroidEffectProfile(child);
 	}
 
 	public override void _Process(double _)
