@@ -37,12 +37,13 @@ public partial class Runtime : Node
 		if (OS.GetName().Equals("Android", System.StringComparison.OrdinalIgnoreCase))
 		{
 			GetTree().SceneChanged += OptimizeAndroidScene;
-			CallDeferred(MethodName.OptimizeAndroidScene, GetTree().CurrentScene);
+			CallDeferred(MethodName.OptimizeAndroidScene);
 		}
 	}
 
-	private void OptimizeAndroidScene(Node scene)
+	private void OptimizeAndroidScene()
 	{
+		Node scene = GetTree().CurrentScene;
 		if (scene == null)
 			return;
 
@@ -58,9 +59,9 @@ public partial class Runtime : Node
 			worldEnvironment.Environment.SsilEnabled = false;
 		}
 
-		if (node is GPUParticles3D particles3D)
+		if (node is GpuParticles3D particles3D)
 			particles3D.Amount = Mathf.Max(8, particles3D.Amount / 2);
-		else if (node is GPUParticles2D particles2D)
+		else if (node is GpuParticles2D particles2D)
 			particles2D.Amount = Mathf.Max(8, particles2D.Amount / 2);
 
 		foreach (Node child in node.GetChildren())
