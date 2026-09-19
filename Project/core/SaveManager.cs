@@ -688,21 +688,26 @@ public partial class SaveManager : Node
 		// Quality settings
 		Rid viewportRid = Runtime.Instance.GetViewport().GetViewportRid();
 
-		// Update rendering mode/scale
-		RenderingServer.ViewportSetScaling3DScale(viewportRid, Config.renderScale * .01f);
-		Instance.GetTree().Root.ContentScaleMode = Config.renderScale >= 100 ? Window.ContentScaleModeEnum.CanvasItems : Window.ContentScaleModeEnum.Viewport;
+		bool isAndroid = OS.GetName().Equals("Android", System.StringComparison.OrdinalIgnoreCase);
+		int effectiveRenderScale = isAndroid ? Mathf.Min(Config.renderScale, 85) : Config.renderScale;
+		int effectiveAntiAliasing = isAndroid ? 0 : Config.antiAliasing;
+
+		// Update rendering mode/scale. Android renders 3D at up to 85 percent
+		// resolution while keeping the UI at full resolution.
+		RenderingServer.ViewportSetScaling3DScale(viewportRid, effectiveRenderScale * .01f);
+		Instance.GetTree().Root.ContentScaleMode = effectiveRenderScale >= 100 ? Window.ContentScaleModeEnum.CanvasItems : Window.ContentScaleModeEnum.Viewport;
 		RenderingServer.ViewportSetScaling3DMode(viewportRid, Config.resizeMode);
 
 		// Update anti-aliasing
 		RenderingServer.ViewportScreenSpaceAA targetSSAA = RenderingServer.ViewportScreenSpaceAA.Disabled;
 		RenderingServer.ViewportMsaa targetMSAA = RenderingServer.ViewportMsaa.Disabled;
-		if (Config.antiAliasing == 1) // Use FXAA
+		if (effectiveAntiAliasing == 1) // Use FXAA
 			targetSSAA = RenderingServer.ViewportScreenSpaceAA.Fxaa;
-		else if (Config.antiAliasing == 2) // Use MSAA
+		else if (effectiveAntiAliasing == 2) // Use MSAA
 			targetMSAA = RenderingServer.ViewportMsaa.Msaa2X;
-		else if (Config.antiAliasing == 3)
+		else if (effectiveAntiAliasing == 3)
 			targetMSAA = RenderingServer.ViewportMsaa.Msaa4X;
-		else if (Config.antiAliasing == 4)
+		else if (effectiveAntiAliasing == 4)
 			targetMSAA = RenderingServer.ViewportMsaa.Msaa8X;
 
 		RenderingServer.ViewportSetScreenSpaceAA(viewportRid, targetSSAA);
@@ -711,7 +716,6 @@ public partial class SaveManager : Node
 		// Android gets a conservative effect profile. The scenes keep their
 		// authored visuals, but expensive post-processing is reduced before the
 		// first scene is rendered, avoiding shader/effect spikes during loading.
-		bool isAndroid = OS.GetName().Equals("Android", System.StringComparison.OrdinalIgnoreCase);
 		QualitySetting bloomQuality = isAndroid ? QualitySetting.Low : Config.bloomMode;
 		QualitySetting shadowQuality = isAndroid ? QualitySetting.Low : Config.softShadowQuality;
 		QualitySetting postProcessQuality = isAndroid ? QualitySetting.Low : Config.postProcessingQuality;
