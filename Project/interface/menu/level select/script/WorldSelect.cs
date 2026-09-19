@@ -60,7 +60,8 @@ public partial class WorldSelect : Menu
 			_levelNewSprites.Add(GetNode<Control>(levelNewSprites[i]));
 
 		VerticalSelection = menuMemory[MemoryKeys.WorldSelect];
-		ActiveVideoPlayer = videoPlayers[VerticalSelection];
+		if (videoPlayers != null && videoPlayers.Length > 0)
+			ActiveVideoPlayer = videoPlayers[Mathf.Clamp(VerticalSelection, 0, videoPlayers.Length - 1)];
 
 		if (menuMemory[MemoryKeys.ActiveMenu] == (int)MemoryKeys.LevelSelect) // Activate the correct submenu
 			LoadIntoLevelSelect();
@@ -84,13 +85,16 @@ public partial class WorldSelect : Menu
 		VerticalSelection = menuMemory[MemoryKeys.WorldSelect];
 		menuMemory[MemoryKeys.ActiveMenu] = (int)MemoryKeys.WorldSelect;
 
-		for (int i = 0; i < videoPlayers.Length; i++)
+		if (videoPlayers != null)
 		{
-			if (i == VerticalSelection)
-				continue;
+			for (int i = 0; i < videoPlayers.Length; i++)
+			{
+				if (videoPlayers[i] == null || i == VerticalSelection)
+					continue;
 
-			videoPlayers[i].Paused = true;
-			videoPlayers[i].Modulate = Colors.Transparent;
+				videoPlayers[i].Paused = true;
+				videoPlayers[i].Modulate = Colors.Transparent;
+			}
 		}
 
 		if (animator.AssignedAnimation == "init" || animator.AssignedAnimation == "cancel")
@@ -105,7 +109,7 @@ public partial class WorldSelect : Menu
 
 	public override void _Process(double _)
 	{
-		if (!ActiveVideoPlayer.IsVisibleInTree())
+		if (ActiveVideoPlayer == null || !ActiveVideoPlayer.IsVisibleInTree())
 			return;
 
 		UpdateVideo();
@@ -247,10 +251,16 @@ public partial class WorldSelect : Menu
 
 	private void UpdateActiveVideoPlayer()
 	{
+		if (videoPlayers == null || videoPlayers.Length == 0)
+			return;
+
 		if (VerticalSelection == (int)SaveManager.WorldEnum.Mods)
 			ActiveVideoPlayer = videoPlayers[0];
 		else
-			ActiveVideoPlayer = videoPlayers[VerticalSelection];
+			ActiveVideoPlayer = videoPlayers[Mathf.Clamp(VerticalSelection, 0, videoPlayers.Length - 1)];
+
+		if (ActiveVideoPlayer == null)
+			return;
 
 		ActiveVideoPlayer.Paused = false;
 		if (!ActiveVideoPlayer.IsPlaying())
