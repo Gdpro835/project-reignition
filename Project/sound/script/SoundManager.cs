@@ -38,13 +38,14 @@ public partial class SoundManager : Control
 	public override void _Ready()
 	{
 		instance = this;
-		subtitleAnimator.Play("RESET");
+		subtitleAnimator?.Play("RESET");
 		InitializePearlSFX();
 
-		buttonPromptCharacterIndexes = new int[buttonPrompts.Length];
+		buttonPromptCharacterIndexes = buttonPrompts == null ? [] : new int[buttonPrompts.Length];
 
 		// Cancel Dialog when switching to a new scene
-		TransitionManager.Instance.SceneChanged += CancelDialog;
+		if (TransitionManager.Instance != null)
+			TransitionManager.Instance.SceneChanged += CancelDialog;
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -459,6 +460,9 @@ public partial class SoundManager : Control
 
 	private void InitializePearlSFX()
 	{
+		if (pearlSFX == null)
+			return;
+
 		for (int i = 0; i < pearlSFX.GetChildCount(); i++)
 		{
 			AudioStreamPlayer audioPlayer = pearlSFX.GetChildOrNull<AudioStreamPlayer>(i);

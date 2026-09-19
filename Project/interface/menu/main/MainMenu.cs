@@ -38,7 +38,12 @@ public partial class MainMenu : Menu
 		if (Runtime.Instance.IsUsingMouse)
 			isNothingSelected = true;
 		cursorVelocity = Vector2.Zero;
-		cursor.Position = menuItemAnchorPoints[currentSelection].Position;
+		if (cursor != null && menuItemAnchorPoints != null && menuItemAnchorPoints.Length > 0)
+		{
+			currentSelection = Mathf.Clamp(currentSelection, 0, menuItemAnchorPoints.Length - 1);
+			if (menuItemAnchorPoints[currentSelection] != null)
+				cursor.Position = menuItemAnchorPoints[currentSelection].Position;
+		}
 		menuMemory[MemoryKeys.ActiveMenu] = (int)MemoryKeys.MainMenu;
 	}
 
@@ -70,7 +75,14 @@ public partial class MainMenu : Menu
 
 	public override void _PhysicsProcess(double delta)
 	{
-		cursor.GlobalPosition = cursor.GlobalPosition.SmoothDamp(menuItemAnchorPoints[currentSelection].GlobalPosition, ref cursorVelocity, CursorSmoothing);
+		if (cursor != null && menuItemAnchorPoints != null &&
+			currentSelection >= 0 && currentSelection < menuItemAnchorPoints.Length &&
+			menuItemAnchorPoints[currentSelection] != null)
+		{
+			cursor.GlobalPosition = cursor.GlobalPosition.SmoothDamp(
+				menuItemAnchorPoints[currentSelection].GlobalPosition,
+				ref cursorVelocity, CursorSmoothing);
+		}
 		base._PhysicsProcess(delta);
 	}
 
