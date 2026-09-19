@@ -7,6 +7,7 @@ public partial class VideoStreamFileLoadPlayer : VideoStreamPlayer
 {
 	[Export(PropertyHint.File)]
 	private string videoFilePath;
+	private bool loadAttempted;
 
 	public void SetVideoFilePath(string path) => videoFilePath = path;
 
@@ -15,11 +16,21 @@ public partial class VideoStreamFileLoadPlayer : VideoStreamPlayer
 		if (Engine.IsEditorHint())
 			return;
 
-		ReloadVideoPath();
+		// Do not initialize hidden video players. On Android the FFmpeg backend
+		// allocates a decoder even when a VideoStreamPlayer is invisible.
+		if (Visible)
+			ReloadVideoPath();
+	}
+
+	public override void _Process(double _delta)
+	{
+		if (!Engine.IsEditorHint() && Visible && Stream == null && !loadAttempted)
+			ReloadVideoPath();
 	}
 
 	public void ReloadVideoPath()
 	{
+		loadAttempted = true;
 		if (string.IsNullOrEmpty(videoFilePath))
 			return;
 
