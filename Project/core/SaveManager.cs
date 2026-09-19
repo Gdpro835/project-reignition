@@ -708,11 +708,18 @@ public partial class SaveManager : Node
 		RenderingServer.ViewportSetScreenSpaceAA(viewportRid, targetSSAA);
 		RenderingServer.ViewportSetMsaa3D(viewportRid, targetMSAA);
 
-		RenderingServer.EnvironmentGlowSetUseBicubicUpscale(Config.bloomMode == QualitySetting.High);
+		// Android gets a conservative effect profile. The scenes keep their
+		// authored visuals, but expensive post-processing is reduced before the
+		// first scene is rendered, avoiding shader/effect spikes during loading.
+		bool isAndroid = OS.GetName().Equals("Android", System.StringComparison.OrdinalIgnoreCase);
+		QualitySetting bloomQuality = isAndroid ? QualitySetting.Low : Config.bloomMode;
+		QualitySetting shadowQuality = isAndroid ? QualitySetting.Low : Config.softShadowQuality;
+		QualitySetting postProcessQuality = isAndroid ? QualitySetting.Low : Config.postProcessingQuality;
+		RenderingServer.EnvironmentGlowSetUseBicubicUpscale(bloomQuality == QualitySetting.High);
 
 		int targetShadowAtlasSize = 1024;
 		RenderingServer.ShadowQuality targetSoftShadowQuality = RenderingServer.ShadowQuality.Hard;
-		switch (Config.softShadowQuality)
+		switch (shadowQuality)
 		{
 			case QualitySetting.Low:
 				targetShadowAtlasSize = 2048;
@@ -733,7 +740,7 @@ public partial class SaveManager : Node
 		RenderingServer.DirectionalSoftShadowFilterSetQuality(targetSoftShadowQuality);
 		RenderingServer.PositionalSoftShadowFilterSetQuality(targetSoftShadowQuality);
 
-		switch (Config.postProcessingQuality)
+		switch (postProcessQuality)
 		{
 			case QualitySetting.Low:
 				RenderingServer.EnvironmentSetSsaoQuality(RenderingServer.EnvironmentSsaoQuality.Low, true, .5f, 0, 20,
