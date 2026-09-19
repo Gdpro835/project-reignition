@@ -38,14 +38,22 @@ public partial class SoundManager : Control
 	public override void _Ready()
 	{
 		instance = this;
+		CallDeferred(MethodName.InitializeRuntime);
+	}
+
+	private void InitializeRuntime()
+	{
 		subtitleAnimator?.Play("RESET");
 		InitializePearlSFX();
 
 		buttonPromptCharacterIndexes = buttonPrompts == null ? [] : new int[buttonPrompts.Length];
 
 		// Cancel Dialog when switching to a new scene
-		if (TransitionManager.Instance != null)
+		if (TransitionManager.Instance != null &&
+			!TransitionManager.Instance.IsConnected(TransitionManager.SignalName.SceneChanged, new Callable(this, MethodName.CancelDialog)))
+		{
 			TransitionManager.Instance.SceneChanged += CancelDialog;
+		}
 	}
 
 	public override void _PhysicsProcess(double delta)
