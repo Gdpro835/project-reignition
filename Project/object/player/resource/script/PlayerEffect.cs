@@ -534,10 +534,7 @@ public partial class PlayerEffect : Node3D
 		}
 
 		if (groundMaterial != MaterialEnum.Pavement) // Avoid being spammed with warnings
-		{
-			GD.PushWarning($"'{collision.Name}' isn't in any sound groups found in CharacterSound.cs.");
 			groundMaterial = MaterialEnum.Pavement; // Default to pavement
-		}
 	}
 	#endregion
 
