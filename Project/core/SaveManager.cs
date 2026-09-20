@@ -1640,15 +1640,24 @@ public partial class SaveManager : Node
 	/// <summary> Attempts to save shared data to file. </summary>
 	public static void SaveSharedData()
 	{
+		if (SharedData == null)
+			SharedData = SharedGameData.CreateDefaultData();
+
 		if (!DirAccess.DirExistsAbsolute(SaveDirectory))
 			DirAccess.MakeDirRecursiveAbsolute(SaveDirectory);
 
 		string dataFile = SaveDirectory.PathJoin(SharedFileName);
 		FileAccess file = FileAccess.Open(dataFile, FileAccess.ModeFlags.Write);
+		if (file == null)
+			return;
+
 		file.StoreString(Json.Stringify(SharedData.ToDictionary(), "\t"));
 		file.Close();
 
 		file = FileAccess.Open(SaveLocationFile, FileAccess.ModeFlags.Write);
+		if (file == null)
+			return;
+
 		file.StoreString(DataDirectory);
 		file.Close();
 	}
