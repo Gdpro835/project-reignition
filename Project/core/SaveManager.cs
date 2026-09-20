@@ -1127,6 +1127,9 @@ public partial class SaveManager : Node
 		/// <summary> Determines if a skill hasn't been viewed yet. </summary>
 		public bool HasNewSkill()
 		{
+			if (TimeAttackManager.Instance.IsRunActive)
+				return false;
+
 			for (int i = 0; i < (int)SkillKey.Count; i++)
 			{
 				SkillKey key = (SkillKey)i;
