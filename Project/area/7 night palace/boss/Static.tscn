@@ -6,7 +6,7 @@
 [ext_resource type="Resource" uid="uid://cedbgtjhhisjg" path="res://area/7 night palace/data/BossDialogLibrary.tres" id="4_p7tjh"]
 [ext_resource type="Texture2D" uid="uid://caxeerv5m6p41" path="res://area/7 night palace/data/skybox/model/texture/sky moon.png" id="7_njf43"]
 [ext_resource type="PackedScene" uid="uid://1mlq23jb6byp" path="res://area/7 night palace/data/skybox/Skybox.tscn" id="9_aohgx"]
-[ext_resource type="Curve3D" uid="uid://dvdtvb7kixby0" path="res://area/7 night palace/boss/environment/path/MainPath.tres" id="10_7yaqk"]
+[ext_resource type="Curve3D" uid="uid://fgqgx47lvip5" path="res://area/7 night palace/boss/environment/path/MainPath.tres" id="10_7yaqk"]
 [ext_resource type="PackedScene" uid="uid://bpk2a7t5ag3lk" path="res://area/7 night palace/boss/data/InfiniteHall.tscn" id="10_jhood"]
 [ext_resource type="PackedScene" uid="uid://0o1ds8o5k04j" path="res://effect/buffer/PlanarReflectionRenderer.tscn" id="11_gi0oh"]
 [ext_resource type="Script" uid="uid://ri8vyp7b5bne" path="res://effect/buffer/script/LightShaftEnabler.cs" id="11_iowwo"]
@@ -582,7 +582,7 @@ light_cull_mask = 4293918722
 [node name="Skybox" parent="Visuals" unique_id=486591170 instance=ExtResource("9_aohgx")]
 metadata/_edit_lock_ = true
 
-[node name="MoonMesh" parent="Visuals/Skybox/SkyRoot/Skeleton3D" parent_id_path=PackedInt32Array(486591170, 1362330681) index="5" unique_id=551842240]
+[node name="MoonMesh" parent="Visuals/Skybox/SkyRoot/Skeleton3D" parent_id_path=PackedInt32Array(486591170, 839185966) index="5" unique_id=34415628]
 surface_material_override/0 = SubResource("StandardMaterial3D_ca2n2")
 
 [node name="moonlight" type="Node3D" parent="Visuals/Skybox" unique_id=2050519465]
@@ -696,6 +696,7 @@ depth_viewport_path = NodePath("../../Viewport/DepthPreview/DepthViewport")
 metadata/_edit_use_anchors_ = true
 
 [node name="Path" type="Node3D" parent="." unique_id=552831541]
+visible = false
 
 [node name="MainPath" type="Path3D" parent="Path" unique_id=596483389]
 curve = ExtResource("10_7yaqk")
