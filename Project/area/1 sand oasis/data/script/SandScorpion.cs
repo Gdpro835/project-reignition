@@ -1032,7 +1032,8 @@ public partial class SandScorpion : Node3D
 
 		if (Player.Skills.IsSpeedBreakActive) // Special attack
 		{
-			if (attackState == AttackState.Strike || attackState == AttackState.Recovery)
+			if (damageState == DamageState.Hitstun ||
+				(isPhaseTwoActive && (attackState == AttackState.Strike || attackState == AttackState.Recovery)))
 			{
 				flyingEyeAnimationTree.Set(DamageParameter, (int)AnimationNodeOneShot.OneShotRequest.Fire);
 				rootAnimationTree.Set(PhaseTwoDamageParameter, (int)AnimationNodeOneShot.OneShotRequest.Fire);

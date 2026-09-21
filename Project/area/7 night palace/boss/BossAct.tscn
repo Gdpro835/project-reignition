@@ -100,7 +100,7 @@ shader_parameter/debug_dot_radius = 0.01
 material = SubResource("ShaderMaterial_mtp86")
 
 [node name="ErazorPathFollower" type="PathFollow3D" parent="Static/Path/MainPath" parent_id_path=PackedInt32Array(1827426773, 596483389) index="0" unique_id=2112954586]
-transform = Transform3D(0.999992, 0, 0.00084701396, 0, 1, 0, -0.00084701396, 0, 0.999992, 0.13043167, 0, -59.999912)
+transform = Transform3D(0.9999227, 0, 0.011805911, 0, 1, 0, -0.011805911, 0, 0.9999227, -0.7360068, 0, -103.490295)
 progress = 60.0
 cubic_interp = false
 tilt_enabled = false

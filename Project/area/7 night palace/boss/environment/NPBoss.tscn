@@ -53,104 +53,129 @@ roughness = 0.5
 
 [node name="NPBoss" unique_id=366328308 instance=ExtResource("1_avx7w")]
 
-[node name="stg073_w_Mesh_0000" parent="." index="0" unique_id=294400309]
+[node name="stg073_w_Mesh_0000" parent="." index="0" unique_id=1478191092]
 layers = 2
+extra_cull_margin = 1000.0
 instance_shader_parameters/tint = Color(2.454227, 2.454227, 2.454227, 1)
 
-[node name="stg073_w_Mesh_0001" parent="." index="1" unique_id=289257972]
+[node name="stg073_w_Mesh_0001" parent="." index="1" unique_id=281281208]
 layers = 2
+extra_cull_margin = 1000.0
 instance_shader_parameters/tint = Color(1.0627335, 1.0627335, 1.0627335, 1)
 
-[node name="stg073_o_Mesh_0041" parent="." index="2" unique_id=404921449]
+[node name="stg073_o_Mesh_0041" parent="." index="2" unique_id=527240386]
 layers = 2
 cast_shadow = 0
+extra_cull_margin = 1000.0
 
-[node name="stg073_o_Mesh_0039" parent="." index="3" unique_id=1725578495]
+[node name="stg073_o_Mesh_0039" parent="." index="3" unique_id=1317097776]
 layers = 2
 cast_shadow = 0
+extra_cull_margin = 1000.0
 
-[node name="stg073_o_Mesh_0035" parent="." index="4" unique_id=611239966]
+[node name="stg073_o_Mesh_0035" parent="." index="4" unique_id=217401608]
 layers = 2
 cast_shadow = 0
+extra_cull_margin = 1000.0
 
-[node name="stg073_o_Mesh_0011" parent="." index="5" unique_id=1931627414]
+[node name="stg073_o_Mesh_0011" parent="." index="5" unique_id=36668142]
 layers = 2
 cast_shadow = 0
+extra_cull_margin = 1000.0
 
-[node name="stg073_p_Mesh_0000" parent="." index="6" unique_id=607552496]
+[node name="stg073_p_Mesh_0000" parent="." index="6" unique_id=1331724181]
 layers = 2
 cast_shadow = 0
+extra_cull_margin = 1000.0
 
-[node name="stg073_o_Mesh_0028" parent="." index="7" unique_id=1353831464]
+[node name="stg073_o_Mesh_0028" parent="." index="7" unique_id=1519332830]
 layers = 2
 cast_shadow = 0
+extra_cull_margin = 1000.0
 
-[node name="stg073_k_Mesh_0004" parent="." index="8" unique_id=1929739916]
+[node name="stg073_k_Mesh_0004" parent="." index="8" unique_id=829650256]
 layers = 2
 cast_shadow = 0
+extra_cull_margin = 1000.0
 
-[node name="stg073_o_Mesh_0019" parent="." index="9" unique_id=815950708]
+[node name="stg073_o_Mesh_0019" parent="." index="9" unique_id=736834640]
 layers = 2
 cast_shadow = 0
+extra_cull_margin = 1000.0
 
-[node name="stg073_o_Mesh_0000" parent="." index="10" unique_id=1198389172]
+[node name="stg073_o_Mesh_0000" parent="." index="10" unique_id=2124803047]
 layers = 2
 cast_shadow = 0
+extra_cull_margin = 1000.0
 
-[node name="stg073_o_Mesh_0022" parent="." index="11" unique_id=2138274337]
+[node name="stg073_o_Mesh_0022" parent="." index="11" unique_id=1045617983]
 layers = 2
 cast_shadow = 0
+extra_cull_margin = 1000.0
 
-[node name="stg073_o_Mesh_0044" parent="." index="12" unique_id=491846722]
+[node name="stg073_o_Mesh_0044" parent="." index="12" unique_id=1793488015]
 layers = 2
 cast_shadow = 0
+extra_cull_margin = 1000.0
 
-[node name="stg073_p_Mesh_0001" parent="." index="13" unique_id=448343533]
+[node name="stg073_p_Mesh_0001" parent="." index="13" unique_id=1872669235]
 layers = 2
 cast_shadow = 0
+extra_cull_margin = 1000.0
 
-[node name="stg073_p_Mesh_0002" parent="." index="14" unique_id=884262822]
+[node name="stg073_p_Mesh_0002" parent="." index="14" unique_id=1322758273]
 layers = 2
 cast_shadow = 0
+extra_cull_margin = 1000.0
 
-[node name="stg073_o_Mesh_0007" parent="." index="15" unique_id=1699885890]
+[node name="stg073_o_Mesh_0007" parent="." index="15" unique_id=554173649]
 layers = 2
 cast_shadow = 0
+extra_cull_margin = 1000.0
 
-[node name="stg073_o_Mesh_0061" parent="." index="16" unique_id=1197646294]
+[node name="stg073_o_Mesh_0061" parent="." index="16" unique_id=2134446055]
 layers = 2
 cast_shadow = 0
+extra_cull_margin = 1000.0
 
-[node name="stg073_o_Mesh_0034" parent="." index="17" unique_id=910719053]
+[node name="stg073_o_Mesh_0034" parent="." index="17" unique_id=1343841494]
 layers = 2
 cast_shadow = 0
+extra_cull_margin = 1000.0
 
-[node name="stg073_o_Mesh_0053" parent="." index="18" unique_id=1875027277]
+[node name="stg073_o_Mesh_0053" parent="." index="18" unique_id=455995098]
 layers = 2
 cast_shadow = 0
+extra_cull_margin = 1000.0
 
-[node name="stg073_o_Mesh_0038" parent="." index="19" unique_id=478068792]
+[node name="stg073_o_Mesh_0038" parent="." index="19" unique_id=2143326431]
 layers = 2
 cast_shadow = 0
+extra_cull_margin = 1000.0
 
-[node name="stg073_o_Mesh_0051" parent="." index="20" unique_id=1157845245]
+[node name="stg073_o_Mesh_0051" parent="." index="20" unique_id=1249233019]
 layers = 2
 cast_shadow = 0
+extra_cull_margin = 1000.0
 
-[node name="stg073_o_Mesh_0050" parent="." index="21" unique_id=1281168906]
+[node name="stg073_o_Mesh_0050" parent="." index="21" unique_id=1485392650]
 layers = 2
 cast_shadow = 0
+extra_cull_margin = 1000.0
 
-[node name="stg073_o_Mesh_0060" parent="." index="22" unique_id=873385971]
+[node name="stg073_o_Mesh_0060" parent="." index="22" unique_id=1404511806]
 layers = 2
 cast_shadow = 0
+extra_cull_margin = 1000.0
 
-[node name="stg073_o_Mesh_0063" parent="." index="23" unique_id=1175922611]
+[node name="stg073_o_Mesh_0063" parent="." index="23" unique_id=868102543]
 layers = 2
 cast_shadow = 0
+extra_cull_margin = 1000.0
 
-[node name="stg073_k2_Mesh_0000" parent="." index="24" unique_id=632967931]
+[node name="stg073_k2_Mesh_0000" parent="." index="24" unique_id=82361051]
 layers = 2
+extra_cull_margin = 1000.0
 surface_material_override/0 = SubResource("StandardMaterial3D_jev55")
 
 [node name="pillar_shadows" type="Node3D" parent="." index="25" unique_id=1342889008]

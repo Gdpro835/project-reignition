@@ -207,6 +207,9 @@ public partial class SkillOption : Control
 
 	public bool IsNew()
 	{
+		if (TimeAttackManager.Instance.IsRunActive)
+			return false;
+
 		if (!IsAugmentDropdown)
 			return !SaveManager.ActiveGameData.viewedSkills.Contains(Skill.VisibilityKey);
 
